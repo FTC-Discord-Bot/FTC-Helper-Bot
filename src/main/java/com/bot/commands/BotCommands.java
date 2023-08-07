@@ -682,14 +682,7 @@ break;
 
                 String imgURL = repoStats[0];
 
-                if (GitHubAPIerrorCheck(event, eb, repoStats)){
-                    eb.setTitle("Error");
-                    eb.setColor(ERROR_COLOR);
-                    eb.setDescription("The GitHub API is currently unavailable, please try again later.");
-                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
-
-                    return;
-                }
+                if (GitHubAPIerrorCheck(event, eb, repoStats))return;
 
                 eb.setTitle("Repository for " + Repo);
                 eb.setColor(MAIN_COLOR);
@@ -724,14 +717,8 @@ break;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                if (GitHubAPIerrorCheck(event, eb, latestCommitResponse)){
-                    eb.setTitle("Error");
-                    eb.setColor(ERROR_COLOR);
-                    eb.setDescription("The GitHub API is currently unavailable, please try again later.");
-                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                if (GitHubAPIerrorCheck(event, eb, latestCommitResponse))return;
 
-                    return;
-                }
 
                 String name;
                 String message;
@@ -2205,7 +2192,7 @@ Code X API is not working for the time being so the command is disabled
             eb.setDescription(returnedArray[1]);
             eb.setColor(ERROR_COLOR);
                 eb.setFooter("Powered by GitHub Rest API", "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png");
-            event.replyEmbeds(eb.build()).setEphemeral(false).queue();
+            event.replyEmbeds(eb.build()).setEphemeral(true).queue();
 
             return true;
         }
