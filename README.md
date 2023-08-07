@@ -1,0 +1,59 @@
+<div style="text-align: center;">
+  <img src="images/Long GitHub.png" alt="Logo" >
+</div>
+
+---
+<h1 align="center" id="title">FTC Helper Bot</h1>
+
+<p id="description">A Java discord bot created for FTC servers</p>  
+
+**Note**: This bot is still in development and may go down sometimes for updates or maintenance  
+
+*Contributions are welcome!*
+   
+
+
+
+<h2>⚡ Integrations</h2>
+
+- FTC API
+- FTC Scout
+- GitHub
+- Google Maps
+- Nasa
+- GitBook (Documentation)
+- Open Meteo (Weather)
+
+<h2>📚 Useful Commands</h2>
+-  /help - Shows a list of commands
+- /team-info - Shows information about a team based on number
+- /match-results - Shows the results of a match during an event
+- /events - Shows a list of events for a team
+
+<h2>💻 Setup for bot development</h2>
+- Clone the repository
+- Create a file called `Config.json` in the path `src/main/java/com/bot/Config.JSON`
+- Add the following to the file:
+```json
+{
+  "MAIN_COLOR": [59, 127, 255],
+  "ERROR_COLOR": [255, 0, 0],
+  "BOT_NAME": "FTC Helper Bot",
+  "DISCORD_TOKEN": "INSERT_HERE",
+  "GITBOOK_TOKEN": "INSERT_HERE",
+  "LEARN_SOFTWARE_SPACE_ID": "0Atm0LAmF7JLCQSIr8d4",
+  "FTC_USERNAME": "INSERT_HERE",
+  "FTC_PASSWORD": "INSERT_HERE",
+  "NASA_API_KEY": "INSERT_HERE",
+  "INLINE": false,
+  "DEFAULT_SEASON": 2022,
+  "COMMAND_DELAY": 10
+}
+```
+To get a discord token, go to the [Discord Developer Portal](https://discord.com/developers/applications) and create a new application. Then, go to the bot tab and create a bot. You can then copy the token and paste it into the `Config.json` file. Also do not forget to enable all the Privileged Gateway Intents  
+
+Register for the FTC API [FTC Events API](https://ftc-events.firstinspires.org/services/API)     
+
+To get a NASA API key, go to the [NASA API Portal](https://api.nasa.gov/) and create a new application. You can then copy the token and paste it into the `Config.json` file  
+
+If you need to test the AI command, you can get a GitBook token by going to the [GitBook Developer Portal](https://app.gitbook.com/account/developer)  
