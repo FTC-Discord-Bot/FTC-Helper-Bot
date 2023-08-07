@@ -33,7 +33,8 @@
 <h2>💻 Setup for bot development</h2>
 - Clone the repository
 - Create a file called `Config.json` in the path `src/main/java/com/bot/Config.JSON`
-- Add the following to the file:
+- Add the following to the file:  
+
 ```json
 {
   "MAIN_COLOR": [59, 127, 255],
