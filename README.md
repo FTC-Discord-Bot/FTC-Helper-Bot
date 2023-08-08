@@ -3,8 +3,13 @@
 </div>
 
 ---
-<h1 align="center" id="title">FTC Helper Bot</h1>
+<h1 align="center" id="title">FTC Helper Bot</h1>  
 
+![GitHub Actions Status](https://img.shields.io/github/actions/workflow/status/FTC-Discord-Bot/FTC-Helper-Bot/gradle.yml)  
+
+[![Discord Invite](https://img.shields.io/badge/Discord%20Invite-8A2BE2?style=flat&logo=discord&link=https%3A%2F%2Fdiscord.com%2Fapi%2Foauth2%2Fauthorize%3Fclient_id%3D1138233951090135072%26permissions%3D8%26scope%3Dbot)](https://discord.com/api/oauth2/authorize?client_id=1138233951090135072&permissions=8&scope=bot)
+
+ 
 <p id="description">A Java discord bot created for FTC servers</p>  
 
 **Note**: This bot is still in development and may go down sometimes for updates or maintenance  
