@@ -29,13 +29,15 @@
 - GitBook (Documentation)
 - Open Meteo (Weather)
 
-<h2>📚 Useful Commands</h2>
--  /help - Shows a list of commands
-- /team-info - Shows information about a team based on number
+<h2>📚 Useful Commands</h2>  
+
+-  /help - Shows a list of commands  
+- /team-info - Shows information about a team based on number  
 - /match-results - Shows the results of a match during an event
 - /events - Shows a list of events for a team
 
-<h2>💻 Setup for bot development</h2>
+<h2>💻 Setup for bot development</h2>  
+
 - Clone the repository
 - Create a file called `Config.json` in the path `src/main/java/com/bot/Config.JSON`
 - Add the following to the file:  
