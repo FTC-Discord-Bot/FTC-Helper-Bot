@@ -1,2 +1,3 @@
-rootProject.name = 'FTCDiscordBot-WilcoxRobotics'
+rootProject.name = 'FTC-Helper-Bot'
+include 'FTC-Helper-Bot'
 

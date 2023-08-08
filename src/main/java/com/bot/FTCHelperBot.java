@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import com.bot.commands.BotCommands;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -19,9 +18,7 @@ import org.json.JSONObject;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+
 
 
 public class FTCHelperBot {
@@ -45,16 +42,17 @@ public class FTCHelperBot {
     public static void main(String[] args) throws InterruptedException {
 
         String jsonStr = null;
-        String filePath = "src/main/java/com/bot/Config.JSON";
+        String filePath = "com/bot/Config.JSON";
 
         // Parse the JSON string into a JSONObject
 
         // Get the InputStream of the resource file from the content root folder
         InputStream inputStream = FTCHelperBot.class.getClassLoader().getResourceAsStream(filePath);
 
+
         // Read the content of the file as a string
         try {
-            jsonStr = new String(Files.readAllBytes(Paths.get(filePath)));
+            jsonStr = new String(inputStream.readAllBytes());
             System.out.println("\n-Loaded JSON Config File-");
         } catch (IOException e) {
             e.printStackTrace();
