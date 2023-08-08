@@ -11,7 +11,7 @@
 
 *Contributions are welcome!*
    
-
+### [+ Add to Server](https://discord.com/api/oauth2/authorize?client_id=1138233951090135072&permissions=8&scope=bot)
 
 
 <h2>⚡ Integrations</h2>
