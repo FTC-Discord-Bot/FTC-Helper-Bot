@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-
 public class FTCHelperBot {
     public static Guild guild;
     public static JDA jda;
@@ -150,7 +149,7 @@ public class FTCHelperBot {
                             .addOption(OptionType.INTEGER, "amount", "Amount of messages to clear", true)
                             .addOption(OptionType.USER, "user", "User whose messages to clear", false),
                     Commands.slash("weather", "Get the weather at a team's location")
-                            .addOption(OptionType.INTEGER, "team-number", "Team Number")
+                            .addOption(OptionType.INTEGER, "team-number", "Team Number",true)
                     .addOptions(
                             new OptionData(OptionType.STRING, "measurement-unit", "what units to use for the weather")
                                     .addChoice("Imperial", "imperial")

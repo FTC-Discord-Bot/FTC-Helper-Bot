@@ -2181,7 +2181,7 @@ Code X API is not working for the time being so the command is disabled
         long endTime = System.nanoTime();
         long duration = (endTime - startCmnd);
         long durationMilis = TimeUnit.NANOSECONDS.toMillis(duration);
-        System.out.println("\u001B[32m Command took " + durationMilis + " miliseconds \u001B[0m");
+        System.out.println("\u001B[32m Command took " + durationMilis + " milliseconds, in server: "+event.getGuild().getName()+"\u001B[0m");
     }
 
     // Methods
