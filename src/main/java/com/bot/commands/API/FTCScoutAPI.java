@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -296,10 +297,15 @@ public class FTCScoutAPI {
         if (stats != null) {
              opr = stats.getJSONObject("opr");
         }
-
+        ArrayList<Integer> allopr = new ArrayList<>();
+        ArrayList<Integer> allauto = new ArrayList<>();
         int topopr = 0;
         for (int i = 0; i < events.length(); i++) {
-
+            if (events.getJSONObject(i).isNull("stats")) {
+                continue;
+            }
+            allopr.add(events.getJSONObject(i).getJSONObject("stats").getJSONObject("opr").getInt("totalPointsNp"));
+            allauto.add(events.getJSONObject(i).getJSONObject("stats").getJSONObject("opr").getInt("autoPoints"));
             int o = 0;
             try {
                 o = events.getJSONObject(i).getJSONObject("stats").getJSONObject("opr").getInt("totalPointsNp");
@@ -309,12 +315,33 @@ public class FTCScoutAPI {
             }
 
         }
-        addField(eb, ":fire: Top OPR: ", round(topopr), inline);
+
+        // Calculate the sum of all elements
+        int sumAllOpr = 0;
+        for (int num : allopr) {
+            sumAllOpr += num;
+        }
+
+        int sumAllAuto = 0;
+        for (int num : allauto) {
+            sumAllAuto += num;
+        }
+        // TODO: Add LD (League Domination)
+        if (allopr.size() == 0) {
+            addField(eb, "Cannot calculate average opr", "no data", inline);
+        } else {
+            addField(eb, ":robot: Average Auto Points: ", round(sumAllAuto / allauto.size()), inline);
+            addField(eb, ":bar_chart: Average OPR: ", round(sumAllOpr / allopr.size()), inline);
+            addField(eb, ":fire: Top OPR: ", round(topopr), inline);
+        }
 
         if (eventMode) {
             addField(eb, "Event Code: ", eventdata.get("eventCode"), inline);
-            addField(eb, "Event OPR: ", round(opr.get("totalPointsNp")), inline);
-
+            if (eventdata.isNull("stats")) {
+                addField(eb, "Event OPR: ", "No Data", inline);
+            } else {
+                addField(eb, "Event OPR: ", round(opr.get("totalPointsNp")), inline);
+            }
             int length = events.length();
             eb.setFooter("Page " + (index + 1) + "/" + length);
         }

@@ -545,12 +545,10 @@ break;
                 eb.setDescription(teamName);
                 FTCScoutAPI.getTeamStatsByNumberEmbed(eb, events, 0, false, INLINE);
 
-//                System.out.println(events);
 
 
 
                 eb.setAuthor(BOT_NAME, event.getJDA().getSelfUser().getAvatarUrl(), event.getJDA().getSelfUser().getAvatarUrl());
-                //event.replyEmbeds(eb.build()).queue();
                 eventHook.sendMessageEmbeds(eb.build())
                         .addActionRow(
                                 Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
