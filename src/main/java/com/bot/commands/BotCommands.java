@@ -1653,33 +1653,37 @@ Code X API is not working for the time being so the command is disabled
 
 
 
+                if (!seasonData.has("eventCount")) {
+                    eb.addField("Error: ", "No season data for this season", false);
+                    eb.setColor(ERROR_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                } else {
+                    int eventCount = seasonData.getInt("eventCount");
+                    String gameName = seasonData.getString("gameName");
+                    String kickoff = seasonData.getString("kickoff");
+                    int rookieStart = seasonData.getInt("rookieStart");
+                    int teamCount = seasonData.getInt("teamCount");
 
-                int eventCount = seasonData.getInt("eventCount");
-                String gameName = seasonData.getString("gameName");
-                String kickoff = seasonData.getString("kickoff");
-                int rookieStart = seasonData.getInt("rookieStart");
-                int teamCount = seasonData.getInt("teamCount");
+                    //convert kickoff to readable date
 
-                //convert kickoff to readable date
-
-                String kickoffDate = ConvertDate.convertToDateTime(kickoff);
+                    String kickoffDate = ConvertDate.convertToDateTime(kickoff);
 
 
-                eb.setTitle("FTC Season Data, for season " + seasonDataSeasonInt);
+                    eb.setTitle("FTC Season Data, for season " + seasonDataSeasonInt);
 
 
-                eb.addField("Event Count : ", String.valueOf(eventCount), false);
-                eb.addField("Game Name : ", gameName, false);
-                // eb.addField("Kickoff : ", kickoffDate, false);
-               // eb.addField("Rookie Start : ", String.valueOf(rookieStart), false); date is off
-                eb.addField("Team Count : ", String.valueOf(teamCount), false);
+                    eb.addField("Event Count : ", String.valueOf(eventCount), false);
+                    eb.addField("Game Name : ", gameName, false);
+                    // eb.addField("Kickoff : ", kickoffDate, false);
+                    // eb.addField("Rookie Start : ", String.valueOf(rookieStart), false); date is off
+                    eb.addField("Team Count : ", String.valueOf(teamCount), false);
 
-                eb.setColor(MAIN_COLOR);
-                event.replyEmbeds(eb.build()).setEphemeral(false)
-                        .addActionRow(
-                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
-                        ).queue();
-
+                    eb.setColor(MAIN_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(false)
+                            .addActionRow(
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
+                            ).queue();
+                }
                 break;
 
 
