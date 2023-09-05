@@ -20,7 +20,7 @@ dependencies {
     implementation('org.kohsuke:github-api:1.302')
     implementation('org.jsoup:jsoup:1.14.3')
     implementation 'com.graphql-java:graphql-java:17.0'
-    implementation 'org.slf4j:slf4j-simple:1.6.1'
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
 
 
 
