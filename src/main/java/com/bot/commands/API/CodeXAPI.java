@@ -11,10 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static com.bot.commands.helpers.URLEncoderHelper.URLEncode;
-@Deprecated
-/*
-The Code X API is down for the time being
- */
+
 public class CodeXAPI {
     public static String compileCode(String code, String language) throws UnsupportedEncodingException {
         String fincode = URLEncode(code);
@@ -26,7 +23,6 @@ public class CodeXAPI {
         HttpResponse<String> response = null;
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
