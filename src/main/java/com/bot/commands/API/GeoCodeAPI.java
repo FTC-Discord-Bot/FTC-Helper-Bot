@@ -34,11 +34,15 @@ public class GeoCodeAPI {
             in.close();
 
             JSONArray jsonResponse = new JSONArray(response.toString());
-            JSONObject FirstResponse = jsonResponse.getJSONObject(0);
+            if (jsonResponse.length() == 0) {
+                return(GoogleMapsAPI.geocodeLocation(locationInWords));
+            } else {
+                JSONObject FirstResponse = jsonResponse.getJSONObject(0);
 
-            String lat = FirstResponse.getString("lat");
-            String lon = FirstResponse.getString("lon");
-            return lat+","+lon;
+                String lat = FirstResponse.getString("lat");
+                String lon = FirstResponse.getString("lon");
+                return lat + "," + lon;
+            }
     }
         return null;
     }

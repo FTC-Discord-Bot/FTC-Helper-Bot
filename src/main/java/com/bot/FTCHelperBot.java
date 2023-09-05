@@ -38,6 +38,7 @@ public class FTCHelperBot {
     public static boolean INLINE;
     public static int DEFAULT_SEASON;
     public static int COMMAND_DELAY;
+    public static String GOOGLE_MAPS_TOKEN;
     public static void main(String[] args) throws InterruptedException {
 
         String jsonStr = null;
@@ -77,7 +78,7 @@ public class FTCHelperBot {
         INLINE = configJson.getBoolean("INLINE");
         DEFAULT_SEASON = configJson.getInt("DEFAULT_SEASON");
         COMMAND_DELAY = configJson.getInt("COMMAND_DELAY");
-
+        GOOGLE_MAPS_TOKEN = configJson.getString("GOOGLE_MAPS_TOKEN");
 
 
          jda = JDABuilder.createDefault(DISCORD_TOKEN)

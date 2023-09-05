@@ -53,6 +53,7 @@
   "FTC_USERNAME": "INSERT_HERE",
   "FTC_PASSWORD": "INSERT_HERE",
   "NASA_API_KEY": "INSERT_HERE",
+  "GOOGLE_MAPS_TOKEN": "INSERT_HERE",
   "INLINE": false,
   "DEFAULT_SEASON": 2022,
   "COMMAND_DELAY": 10
@@ -65,3 +66,7 @@ Register for the FTC API [FTC Events API](https://ftc-events.firstinspires.org/s
 To get a NASA API key, go to the [NASA API Portal](https://api.nasa.gov/) and create a new application. You can then copy the token and paste it into the `Config.json` file  
 
 If you need to test the AI command, you can get a GitBook token by going to the [GitBook Developer Portal](https://app.gitbook.com/account/developer)  
+
+To get a Google Maps token, go to the [Google Maps Developer Portal](https://developers.google.com/maps/documentation/javascript/get-api-key) and create a new application. You can then copy the token and paste it into the `Config.json` file  
+
+It is not required to run with a Google Maps token as it only uses the google maps api if the normal geocoding fails  

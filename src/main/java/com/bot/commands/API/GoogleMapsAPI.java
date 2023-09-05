@@ -1,6 +1,7 @@
 package com.bot.commands.API;
 
 
+import com.bot.FTCHelperBot;
 import com.bot.commands.helpers.URLEncoderHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,9 +18,8 @@ import static com.bot.commands.helpers.URLEncoderHelper.URLEncode;
 public class GoogleMapsAPI {
     public static String getStaticMapUrl(String location, int zoom) throws UnsupportedEncodingException {
         // Google Maps API Key is required for this to work. Not included in public version
-        String apiKey = "GOOGLE_MAPS_TOKEN";
         String finLocation = URLEncode(location);
-        String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + finLocation + "&zoom=" + zoom + "&size=600x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7C" + finLocation + "&key=" + apiKey;
+        String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + finLocation + "&zoom=" + zoom + "&size=600x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7C" + finLocation + "&key=" + FTCHelperBot.GOOGLE_MAPS_TOKEN;
         return url;
     }
 
@@ -31,9 +31,7 @@ public class GoogleMapsAPI {
 
     public static String geocodeLocation(String location) throws IOException {
         String finlocation = URLEncoderHelper.URLEncode(location);
-        // Google Maps API Key is required for this to work. Not included in public version
-        String apiKey = "GOOGLE_MAPS_TOKEN";
-        String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + finlocation + "&key=" + apiKey;
+        String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + finlocation + "&key=" + FTCHelperBot.GOOGLE_MAPS_TOKEN;
             String cords = null;
         URL url = new URL(urlString);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -56,7 +54,7 @@ public class GoogleMapsAPI {
                 JSONObject loc = result.getJSONObject("geometry").getJSONObject("location");
                 double lat = loc.getDouble("lat");
                 double lng = loc.getDouble("lng");
-                 cords = "latitude="+lat + "&" + "longitude="+ lng+"&";
+                 cords = lat + "," + lng;
 
             } else {
                 System.out.println("No results found");
