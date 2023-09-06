@@ -329,6 +329,20 @@ public class FTCAPI {
         return location;
     }
 
+    public static StringBuilder eventLocation(String code, int season) {
+        JSONArray eventdata = GetEventAPICode(code, season);
+        StringBuilder location;
+
+//[{"fieldCount":2,"eventId":"a2e6542c-c982-ec4c-bcd7-e5ee8f4e21af","venue":"The King's Academy","country":"USA","stateprov":"CA","website":"","code":"USCANOSBLT","districtCode":"","address":"562 N Britton Ave","city":"Sunnyvale","timezone":"America/Los_Angeles","typeName":"League Tournament","liveStreamUrl":"","published":true,"dateEnd":"2023-02-11T00:00:00","remote":false,"type":"3","divisionCode":null,"regionCode":"USCANO","hybrid":false,"dateStart":"2023-02-11T00:00:00","name":"CA-NorCal South Bay Metro League Tournament","leagueCode":"SB","webcasts":null}]
+        JSONObject event = eventdata.getJSONObject(0);
+        if (event.has("error")) {
+            location = new StringBuilder("Error: could not find event " + code);
+        }else {
+            location = new StringBuilder(String.valueOf(event.get("address"))+","+String.valueOf(event.get("city")) + "," + String.valueOf(event.get("stateprov")) + "," + String.valueOf(event.get("country")));
+        }
+        return location;
+    }
+
     public static JSONArray GetEventAPI(int team, int season) {
         Object obj = CacheGet(EventCache, team);
         JSONArray events;

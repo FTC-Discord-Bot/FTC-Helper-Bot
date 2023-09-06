@@ -89,7 +89,7 @@ public class WeatherAPI {
                 return convertedCodeFirst + "|" + firstTime + "|" + convertedCodeSecond + "|" + secondTime + "|" + convertedCodeThird + "|" + thirdTime + "|" + convertedCodeFourth + "|" + fourthTime + "|" + convertedCodeFifth + "|" + fifthTime + "|" + convertedCodeSixth + "|" + sixthTime + "|" + convertedCodeSeventh + "|" + seventhTime;
             }
         } else {
-            System.out.println("Failed to retrieve the latest commit information from the GitHub API. Response code: " + con.getResponseCode());
+            System.out.println("Failed to retrieve weather: " + con.getResponseCode());
         }
         con.disconnect();
         return null;

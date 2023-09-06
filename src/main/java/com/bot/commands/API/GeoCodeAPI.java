@@ -35,6 +35,7 @@ public class GeoCodeAPI {
 
             JSONArray jsonResponse = new JSONArray(response.toString());
             if (jsonResponse.length() == 0) {
+                System.out.println("No results found for " + locationInWords + ". Trying again with Google Maps API.");
                 return(GoogleMapsAPI.geocodeLocation(locationInWords));
             } else {
                 JSONObject FirstResponse = jsonResponse.getJSONObject(0);

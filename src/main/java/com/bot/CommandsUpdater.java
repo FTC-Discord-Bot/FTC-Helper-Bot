@@ -116,7 +116,14 @@ public class CommandsUpdater {
                         .addOption(OptionType.STRING, "event", "Event Code ex (USCANOSBM1A) use /events to find the code", true)
                         .addOption(OptionType.BOOLEAN, "advanced", "Advanced information", false)
                         .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
-                Commands.slash("help","Get help with the bot and commands")
+                Commands.slash("help","Get help with the bot and commands"),
+                Commands.slash("event-weather","Get weather for an event")
+                        .addOption(OptionType.STRING, "event", "Event Code ex (USCANOSBM1A) use /events to find the code", true)
+                        .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false)
+                        .addOptions(
+                                new OptionData(OptionType.STRING, "measurement-unit", "what units to use for the weather")
+                                        .addChoice("Imperial", "imperial")
+                                        .addChoice("Metric", "metric"))
 
         ).queue();
     }

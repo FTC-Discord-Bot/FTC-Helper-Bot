@@ -2171,6 +2171,107 @@ Code X API is not working for the time being so the command is disabled
                 break;
             }
 
+            case "event-weather":{
+                OptionMapping eventCodeEventWeather = event.getOption("event");
+                String eventCodeEventWeatherStr = eventCodeEventWeather.getAsString();
+                int seasonEventWeather = event.getOption("season") != null ? event.getOption("season").getAsInt() : DEFAULT_SEASON;
+                OptionMapping selectedUnitEventWeather = event.getOption("measurement-unit");
+                DEFAULT_UNIT = "imperial";
+                String finalUnitEventWeather = selectedUnitEventWeather == null ? DEFAULT_UNIT : selectedUnitEventWeather.getAsString();
+
+                eb.setTitle("Weather for event: " + eventCodeEventWeatherStr);
+
+                eb.setColor(MAIN_COLOR);
+
+                StringBuilder textLocation = FTCAPI.eventLocation(eventCodeEventWeatherStr,seasonEventWeather);
+                if (textLocation.toString().contains("Error")) {
+                    eb.setTitle(textLocation.toString());
+                    eb.setColor(ERROR_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                    return;
+                } else {
+
+                    try {
+                        cords = GeoCodeAPI.GeoCode(textLocation.toString());
+                        if (cords == null) {
+                            eb.setTitle("Team not found");
+                            eb.setColor(ERROR_COLOR);
+                            event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                            return;
+                        } else {
+                            splitCords = cords.split(",", 0);
+                            lat = splitCords[0];
+                            lon = splitCords[1];
+                            finCords = "latitude=" + lat + "&" + "longitude=" + lon + "&";
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        combinedVariables = WeatherAPI.getWeather(finCords, finalUnitEventWeather, 1);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    variablesArray = combinedVariables.split("\\|");
+
+                    temp = Double.parseDouble(variablesArray[0]);
+                     wind = Double.parseDouble(variablesArray[1]);
+                     convertedCodeCurrent = variablesArray[2];
+                     firstTempMax = Double.parseDouble(variablesArray[3]);
+                     firstTempMin = Double.parseDouble(variablesArray[4]);
+                     firstPrecip = Double.parseDouble(variablesArray[5]);
+                     convertedCodeFirst = variablesArray[6];
+                     units = variablesArray[7];
+                     unitsForEmbed = new ArrayList<String>();
+
+                    if (units.equals("imperial")) {
+                        unitsForEmbed.add("°F");
+                        unitsForEmbed.add("mp/h");
+                        unitsForEmbed.add("in");
+                    } else if (units.equals("metric")) {
+                        unitsForEmbed.add("°C");
+                        unitsForEmbed.add("km/s");
+                        unitsForEmbed.add("mm");
+                    }
+
+
+                    try {
+                        String[] splitLocation = textLocation.toString().split(",", 0);
+                        String address = splitLocation[0]+","+splitLocation[1];
+
+                        eb.setDescription("Location : [" + textLocation+"]("+GoogleMapsAPI.directionsUrl(address)+")");
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                    eb.addField("```Current Weather```", "", false);
+                    eb.addField("Current conditions : ", convertedCodeCurrent, true);
+                    eb.addField("Current temperature : ", ":thermometer: " + String.valueOf(temp) + " " + unitsForEmbed.get(0), true);
+                    eb.addField("Current wind : ", ":wind_blowing_face: " + String.valueOf(wind) + " " + unitsForEmbed.get(1), true);
+                    eb.addField("```Weather Today```", "", false);
+                    eb.addField("Daily conditions : ", convertedCodeFirst, true);
+                    eb.addField("Highest temperature : ", ":small_red_triangle: :thermometer: " + String.valueOf(firstTempMax) + " " + unitsForEmbed.get(0), true);
+                    eb.addField("Lowest temperature : ", ":small_red_triangle_down: :thermometer: " + String.valueOf(firstTempMin) + " " + unitsForEmbed.get(0), true);
+                    eb.addField("Rain amount : ", ":umbrella:  " + String.valueOf(firstPrecip) + " " + unitsForEmbed.get(2), true);
+
+                    eb.setFooter("Powered by Open Meteo", "https://github.com/open-meteo/open-meteo/blob/main/Public/apple-touch-icon.png?raw=true");
+                    eb.setColor(MAIN_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(false)
+                            .addActionRow(
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
+
+                            )
+                            .queue();
+
+
+
+
+                }
+
+
+                break;
+            }
+
 
             default:
                 // https://github.com/DV8FromTheWorld/JDA/blob/8852b5e9ed07182deaed284a067b1fe68da5936a/src/examples/java/SlashBotExample.java#L111
