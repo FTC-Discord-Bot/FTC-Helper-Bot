@@ -908,68 +908,9 @@ break;
                                 event.replyEmbeds(eb.build()).setEphemeral(true).queue();
                     return;
                 }
-                String cords2;
-                String[] splitCords2;
-                String lat2;
-                String lon2;
-                String finCords2;
-                try {
-                    cords2 = GeoCodeAPI.GeoCode(location2.toString());
-                    if (cords2 == null) {
-                        eb.setTitle("Team not found");
-                        eb.setColor(ERROR_COLOR);
-                                        event.replyEmbeds(eb.build()).setEphemeral(true).queue();
-                        return;
-                    } else {
-                        splitCords2 = cords2.split(",", 0);
-                        lat2 = splitCords2[0];
-                        lon2 = splitCords2[1];
-                        finCords2 = "latitude=" + lat2 + "&" + "longitude=" + lon2 + "&";
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                String combinedVariables2 = null;
-                try {
-                    combinedVariables = WeatherAPI.getWeather(finCords2, "imperial", 2);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                String[] variablesArray2 = combinedVariables.split("\\|");
-
-                String convertedcodeFirst = variablesArray2[0];
-                String firstTime = variablesArray2[1];
-                String convertedcodeSecond = variablesArray2[2];
-                String secondTime = variablesArray2[3];
-                String convertedcodeThird = variablesArray2[4];
-                String thirdTime = variablesArray2[5];
-                String convertedcodeFourth = variablesArray2[6];
-                String fourthTime = variablesArray2[7];
-                String convertedcodeFifth = variablesArray2[8];
-                String fifthTime = variablesArray2[9];
-                String convertedcodeSixth = variablesArray2[10];
-                String sixthTime = variablesArray2[11];
-                String convertedcodeSeventh = variablesArray2[12];
-                String seventhTime = variablesArray2[13];
-
-
                 eb.setTitle("Weather for team : " + team2);
-                eb.setDescription("Location : " + location2);
-                eb.addField(firstTime, convertedcodeFirst, false);
-                eb.addField(secondTime, convertedcodeSecond, false);
-                eb.addField(thirdTime, convertedcodeThird, false);
-                eb.addField(fourthTime, convertedcodeFourth, false);
-                eb.addField(fifthTime, convertedcodeFifth, false);
-                eb.addField(sixthTime, convertedcodeSixth, false);
-                eb.addField(seventhTime, convertedcodeSeventh, false);
-                eb.setFooter("Powered by Open Meteo", "https://github.com/open-meteo/open-meteo/blob/main/Public/apple-touch-icon.png?raw=true");
-                eb.setColor(MAIN_COLOR);
-                        event.replyEmbeds(eb.build()).setEphemeral(false)
-                        .addActionRow(
-                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
 
-                        )
-                        .queue();
+                if (forecast(event, eb, location2,1)) return;
 
                 break;
             case "docs":
@@ -2272,6 +2213,19 @@ Code X API is not working for the time being so the command is disabled
                 break;
             }
 
+            case "event-forecast":{
+                OptionMapping eventCodeWeather = event.getOption("event");
+                String eventCodeEventWeatherStr = eventCodeWeather.getAsString();
+                int seasonEventWeather = event.getOption("season") != null ? event.getOption("season").getAsInt() : DEFAULT_SEASON;
+
+                StringBuilder textLocation = FTCAPI.eventLocation(eventCodeEventWeatherStr,seasonEventWeather);
+                eb.setTitle("Forecast for event: "+eventCodeEventWeatherStr);
+                if (forecast(event, eb, textLocation,2)) return;
+
+
+                break;
+            }
+
 
             default:
                 // https://github.com/DV8FromTheWorld/JDA/blob/8852b5e9ed07182deaed284a067b1fe68da5936a/src/examples/java/SlashBotExample.java#L111
@@ -2291,6 +2245,8 @@ Code X API is not working for the time being so the command is disabled
         }
     }
 
+
+
     // Methods
 
     private static boolean GitHubAPIerrorCheck(@NotNull SlashCommandInteractionEvent event, EmbedBuilder eb, String[] returnedArray) {
@@ -2303,6 +2259,85 @@ Code X API is not working for the time being so the command is disabled
 
             return true;
         }
+        return false;
+    }
+    private static boolean forecast(@NotNull SlashCommandInteractionEvent event, EmbedBuilder eb, StringBuilder location,int type) {
+        String combinedVariables;
+        String cords2;
+        String[] splitCords2;
+        String lat2;
+        String lon2;
+        String finCords2;
+
+        String nameType;
+        if (type == 1){
+            nameType = "Team";
+        } else {
+            nameType = "Event";
+        }
+        try {
+            cords2 = GeoCodeAPI.GeoCode(location.toString());
+            if (cords2 == null) {
+                eb.setTitle(nameType+" not found");
+                eb.setColor(ERROR_COLOR);
+                event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                return true;
+            } else {
+                splitCords2 = cords2.split(",", 0);
+                lat2 = splitCords2[0];
+                lon2 = splitCords2[1];
+                finCords2 = "latitude=" + lat2 + "&" + "longitude=" + lon2 + "&";
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String combinedVariables2 = null;
+        try {
+            combinedVariables = WeatherAPI.getWeather(finCords2, "imperial", 2);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String[] variablesArray2 = combinedVariables.split("\\|");
+
+        String convertedcodeFirst = variablesArray2[0];
+        String firstTime = variablesArray2[1];
+        String convertedcodeSecond = variablesArray2[2];
+        String secondTime = variablesArray2[3];
+        String convertedcodeThird = variablesArray2[4];
+        String thirdTime = variablesArray2[5];
+        String convertedcodeFourth = variablesArray2[6];
+        String fourthTime = variablesArray2[7];
+        String convertedcodeFifth = variablesArray2[8];
+        String fifthTime = variablesArray2[9];
+        String convertedcodeSixth = variablesArray2[10];
+        String sixthTime = variablesArray2[11];
+        String convertedcodeSeventh = variablesArray2[12];
+        String seventhTime = variablesArray2[13];
+
+
+        try {
+            String[] splitLocation = location.toString().split(",", 0);
+            String address = splitLocation[0]+","+splitLocation[1];
+
+            eb.setDescription("Location : [" + location+"]("+GoogleMapsAPI.directionsUrl(address)+")");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        eb.addField(firstTime, convertedcodeFirst, false);
+        eb.addField(secondTime, convertedcodeSecond, false);
+        eb.addField(thirdTime, convertedcodeThird, false);
+        eb.addField(fourthTime, convertedcodeFourth, false);
+        eb.addField(fifthTime, convertedcodeFifth, false);
+        eb.addField(sixthTime, convertedcodeSixth, false);
+        eb.addField(seventhTime, convertedcodeSeventh, false);
+        eb.setFooter("Powered by Open Meteo", "https://github.com/open-meteo/open-meteo/blob/main/Public/apple-touch-icon.png?raw=true");
+        eb.setColor(MAIN_COLOR);
+        event.replyEmbeds(eb.build()).setEphemeral(false)
+                .addActionRow(
+                        Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
+
+                )
+                .queue();
         return false;
     }
 }

@@ -123,7 +123,10 @@ public class CommandsUpdater {
                         .addOptions(
                                 new OptionData(OptionType.STRING, "measurement-unit", "what units to use for the weather")
                                         .addChoice("Imperial", "imperial")
-                                        .addChoice("Metric", "metric"))
+                                        .addChoice("Metric", "metric")),
+                Commands.slash("event-forecast","Get the forecast for an event")
+                        .addOption(OptionType.STRING, "event","Event Code ex (USCANOSBM1A) use /events to find the code", true)
+                        .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false)
 
         ).queue();
     }
