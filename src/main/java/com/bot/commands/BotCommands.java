@@ -339,10 +339,7 @@ break;
                 JSONObject response = ftcScoutAPI.eventRankRequest(season,code);
                 JSONObject sortedResponse = FTCScoutAPI.sortTeamsByRank(response);
 
-                JSONObject data = sortedResponse.getJSONObject("data");
-                JSONObject eventByCode = data.getJSONObject("eventByCode");
-                JSONArray teams = eventByCode.getJSONArray("teams");
-                int length = teams.length();
+
                 if (sortedResponse == null){
                     eb.setTitle("Error");
                     eb.setColor(ERROR_COLOR);
@@ -354,6 +351,10 @@ break;
                             .queue();
 
                 } else {
+                    JSONObject data = sortedResponse.getJSONObject("data");
+                    JSONObject eventByCode = data.getJSONObject("eventByCode");
+                    JSONArray teams = eventByCode.getJSONArray("teams");
+                    int length = teams.length();
                     if (length == 0){
                         eb.setTitle("Error");
                         eb.setColor(ERROR_COLOR);
