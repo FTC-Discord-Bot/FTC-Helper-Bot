@@ -437,7 +437,7 @@ break;
                     eb.setTitle("Error");
                     eb.setColor(ERROR_COLOR);
                     eb.setDescription("Unable to find awards for season " + seasonInt);
-                    event.replyEmbeds(eb.build()).queue();
+                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
                     return;
                 } else {
 
@@ -1015,11 +1015,11 @@ break;
 
                 eb.setTitle("Game Manual");
                 eb.setDescription("The Game Manual is the official guide to the FIRST Tech Challenge game.");
-                eb.addField("Game Manual 1 :books: :one: - Traditional", "[Traditional events 1](https://www.firstinspires.org/sites/default/files/uploads/resource_library/ftc/game-manual-part-1-traditional-events.pdf)", false);
-                eb.addField("Game Manual 1 :books: :one: - Remote ", "[Remote events 1](https://www.firstinspires.org/sites/default/files/uploads/resource_library/ftc/game-manual-part-1-remote-events.pdf)", false);
-                eb.addField("Game Manual 2 :books: :two: - Traditional", "[Traditional events 2](https://www.firstinspires.org/sites/default/files/uploads/resource_library/ftc/game-manual-part-2-traditional.pdf)", false);
-                eb.addField("Game Manual 2 :books: :two: - Remote", "[Remote events 2](https://www.firstinspires.org/sites/default/files/uploads/resource_library/ftc/game-manual-part-2-remote.pdf)", false);
-                eb.addField("Game Manual 0 :link: ", "[Open source resources for all seasons](https://firstinspiresst01.blob.core.windows.net/first-energize-ftc/game-manual-part-3-traditional.pdf)", false);
+                eb.addField("Game Manual 1 :books: :one: - Traditional", "[Traditional events 1](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-1-traditional.pdf)", false);
+                eb.addField("Game Manual 1 :books: :one: - Remote ", "[Remote events 1](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-1-remote.pdf)", false);
+                eb.addField("Game Manual 2 :books: :two: - Traditional", "[Traditional events 2](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-2-traditional.pdf)", false);
+                eb.addField("Game Manual 2 :books: :two: - Remote", "[Remote events 2](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-2-remote.pdf)", false);
+                eb.addField("Game Manual 0 :link: ", "[Open source resources for all seasons](https://gm0.org/en/latest/)", false);
                 eb.setColor(MAIN_COLOR);
                         event.replyEmbeds(eb.build()).setEphemeral(false).addActionRow(
                                         Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
