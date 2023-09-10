@@ -293,6 +293,7 @@ public class FTCAPI {
             }
             eb.setColor(ERROR_COLOR);
             eb.setTitle("Error fetching info about team " + team);
+            eb.setDescription(":information_source: Try running the command with another season if you think this is a mistake");
             return true;
         } else {
             eb.setTitle("Info about team " + team, "https://ftc-events.firstinspires.org/team/" + team);
