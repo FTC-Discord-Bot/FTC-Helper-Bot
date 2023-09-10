@@ -433,36 +433,43 @@ break;
 
 
                 JSONArray Awards = FTCAPI.GetAwardAPI(seasonInt);
+                if (Awards == null) {
+                    eb.setTitle("Error");
+                    eb.setColor(ERROR_COLOR);
+                    eb.setDescription("Unable to find awards for season " + seasonInt);
+                    event.replyEmbeds(eb.build()).queue();
+                    return;
+                } else {
 
-                Set<String> addedNames = new HashSet<>(); // initialize an empty set to keep track of added names
-                StringBuilder awardsBuilder = new StringBuilder(); // initialize a StringBuilder to concatenate unique award names
-                int length = Awards.length();
-                for (int i = 0; i < length; i++) {
-                    JSONObject Award = Awards.getJSONObject(i);
-                    String AwardName = Award.getString("name");
-                    if (!addedNames.contains(AwardName)) { // check if the name is already in the set
-                        addedNames.add(AwardName); // add the name to the set
-                        awardsBuilder.append(AwardName).append("\n"); // append the name to the StringBuilder
+                    Set<String> addedNames = new HashSet<>(); // initialize an empty set to keep track of added names
+                    StringBuilder awardsBuilder = new StringBuilder(); // initialize a StringBuilder to concatenate unique award names
+                    int length = Awards.length();
+                    for (int i = 0; i < length; i++) {
+                        JSONObject Award = Awards.getJSONObject(i);
+                        String AwardName = Award.getString("name");
+                        if (!addedNames.contains(AwardName)) { // check if the name is already in the set
+                            addedNames.add(AwardName); // add the name to the set
+                            awardsBuilder.append(AwardName).append("\n"); // append the name to the StringBuilder
+                        }
                     }
+
+                    String awardsString = awardsBuilder.toString(); // convert the StringBuilder to a String
+                    eb.addField("Award Names", "```" + awardsString + "```", false); // add the concatenated string as a single field to the EmbedBuilder
+
+
+                    eb.setTitle("FTC Awards List");
+                    eb.setDescription("Season : " + seasonInt);
+                    eb.setColor(MAIN_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(false)
+                            .addActionRow(
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
+
+                            )
+                            .queue();
                 }
-
-                String awardsString = awardsBuilder.toString(); // convert the StringBuilder to a String
-                eb.addField("Award Names", "```" + awardsString + "```", false); // add the concatenated string as a single field to the EmbedBuilder
-
-
-                eb.setTitle("FTC Awards List");
-                eb.setDescription("Season : " + seasonInt);
-                eb.setColor(MAIN_COLOR);
-                event.replyEmbeds(eb.build()).setEphemeral(false)
-                        .addActionRow(
-                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
-
-                        )
-                        .queue();
-
-
+                break;
             }
-            break;
+
             case "predict": {
 
 

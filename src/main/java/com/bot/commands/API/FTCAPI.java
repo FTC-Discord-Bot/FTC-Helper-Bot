@@ -647,8 +647,12 @@ if (advanced) {
         JSONArray awards;
         if (obj == null) {
             JSONObject data = FTCAPI.GetJSONC("http://ftc-api.firstinspires.org/v2.0/" + season + "/awards/list");
-            awards = data.getJSONArray("awards");
-            CacheSet(AwardCache, season, awards,20);
+            if (data.has("awards")) {
+                awards = data.getJSONArray("awards");
+                CacheSet(AwardCache, season, awards, 20);
+            } else {
+                awards = null;
+            }
         } else {
             awards = (JSONArray) obj;
         }
