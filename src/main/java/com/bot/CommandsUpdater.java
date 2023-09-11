@@ -96,14 +96,13 @@ public class CommandsUpdater {
                         .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
                 Commands.slash("match-results","Get match results for an event")
                         .addOption(OptionType.STRING, "event", "Event Code ex (USCANOSBM1A) use /events to find the code", true)
-                        .addOption(OptionType.INTEGER, "teamnumber", "Find specific results played by that team", true)
+                        .addOption(OptionType.INTEGER, "teamnumber", "Find specific results played by that team", false)
                         .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
                 Commands.slash("match-schedule","Get the schedule for a team during an event")
                         .addOption(OptionType.STRING, "event", "Event Code ex (USCANOSBM1A) use /events to find the code", true)
                         .addOption(OptionType.INTEGER, "teamnumber", "Schedule by that team. Required for schedule.", true)
                         .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
                 Commands.slash("bot-info","Get information about the bot"),
-                Commands.slash("alum-list","Get a list of alumni for the team"),
                 Commands.slash("ask-ai","Ask AI a question about programming")
                         .addOption(OptionType.STRING, "question", "Question to ask", true),
                 Commands.slash("search-teams-by-name","Search for teams by name")
