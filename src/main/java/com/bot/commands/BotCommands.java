@@ -1499,7 +1499,13 @@ Code X API is not working for the time being so the command is disabled
 
                 OptionMapping eventCode3 = event.getOption("event");
                 OptionMapping season3 = event.getOption("season");
-
+                if (eventCode3.getAsString().contains(" ")) {
+                    eb.setTitle("FTC Alliance Selection");
+                    eb.setDescription("Error: Event code cannot contain spaces\nTo find the event code use the /event command, or search by name using /events-search command");
+                    eb.setColor(ERROR_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                    return;
+                }
                 String eventCodeString3 = eventCode3.getAsString();
                 int alllianceDetailsSeason = season3 != null ? season3.getAsInt() : DEFAULT_SEASON;
 
@@ -1550,10 +1556,20 @@ Code X API is not working for the time being so the command is disabled
                 OptionMapping eventCode4 = event.getOption("event");
                 OptionMapping season4 = event.getOption("season");
 
+                if (eventCode4.getAsString().contains(" ")) {
+                    eb.setTitle("FTC Alliance Selection");
+                    eb.setDescription("Error: Event code cannot contain spaces\nTo find the event code use the /event command, or search by name using /events-search command");
+                    eb.setColor(ERROR_COLOR);
+                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                    return;
+                }
+
                 String eventCodeString4 = eventCode4.getAsString();
                 int alllianceSelectionSeason = season4 != null ? season4.getAsInt() : DEFAULT_SEASON;
 
                 JSONArray alliances2 = FTCAPI.getAllianceSelectionAPI(eventCodeString4, alllianceSelectionSeason);
+
+
 
                 if (alliances2.length() == 0) {
                     eb.addField("Error: ", "No alliances selection details for this event. Try the /alliance-details command.", false);
