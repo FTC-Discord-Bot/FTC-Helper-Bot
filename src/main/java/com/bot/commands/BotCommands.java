@@ -1853,6 +1853,7 @@ Code X API is not working for the time being so the command is disabled
                 eb.addField(":computer: OS", osName + " " + osVersion + " " + architecture, false);
                 eb.addField(":brain: Available Processors", String.valueOf(availableProcessors), false);
                 eb.addField(":floppy_disk: Memory", used_mem / 1000000 + " MB / " + total_mem / 1000000 + " MB", false);
+                eb.addField(":homes: Amount of servers in", String.valueOf(event.getJDA().getGuilds().size()), false);
                         event.replyEmbeds(eb.build()).setEphemeral(false)
                         .addActionRow(
                                 Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
