@@ -1512,7 +1512,11 @@ Code X API is not working for the time being so the command is disabled
                 JSONArray alliances = FTCAPI.getAllianceDetailsAPI(eventCodeString3, alllianceDetailsSeason);
 
 
-                if (alliances.length() == 0) {
+
+                if (alliances == null){
+                    eb.addField("Error: ", "No alliances for this event or Error", false);
+                }
+                else if (alliances.length() == 0) {
                     eb.addField("Error: ", "No alliances for this event", false);
                 } else {
                     for (int i = 0; i < alliances.length(); i++) {

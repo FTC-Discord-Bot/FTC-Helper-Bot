@@ -669,8 +669,12 @@ if (advanced) {
 
     public static JSONArray getAllianceDetailsAPI(String eventCode, int season) {
         JSONObject data = FTCAPI.GetJSONC("http://ftc-api.firstinspires.org/v2.0/" + season + "/alliances/" + eventCode);
-        JSONArray alliances = data.getJSONArray("alliances");
-        return alliances;
+        if (data.has("alliances")) {
+            JSONArray alliances = data.getJSONArray("alliances");
+            return alliances;
+        } else {
+            return null;
+        }
     }
 
 
