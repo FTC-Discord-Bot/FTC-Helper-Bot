@@ -95,8 +95,7 @@ public class FTCAPI {
             internalkeys is the internal keys for the api data
             keys is the key displayed
 
-            TODO:
-            StringBuilder???
+
          */
 
         // highlight
@@ -186,11 +185,7 @@ public class FTCAPI {
         }
         return data;
     }
-    // calculate stats
-    public static double CalculateOPR() {
-        // TODO
-        return 0;
-    }
+
 
 
     // cache
@@ -690,7 +685,6 @@ if (advanced) {
             JSONArray awards = data.getJSONArray("awards");
             return awards;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -700,7 +694,6 @@ if (advanced) {
             JSONObject data = FTCAPI.GetJSONC("http://ftc-api.firstinspires.org/v2.0/" + season);
             return data;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -711,7 +704,6 @@ if (advanced) {
             JSONArray awards = data.getJSONArray("awards");
             return awards;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
