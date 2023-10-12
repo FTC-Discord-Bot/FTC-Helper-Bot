@@ -1,6 +1,5 @@
 package com.bot;
 
-import com.bot.commands.API.FTCAPI;
 import com.bot.commands.ActionRow;
 import com.bot.commands.Buttons;
 import net.dv8tion.jda.api.JDA;
@@ -8,9 +7,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import com.bot.commands.BotCommands;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;

@@ -137,10 +137,11 @@ public class BotCommands extends ListenerAdapter {
                 OptionMapping teamNumber = event.getOption("teamnumber");
                 OptionMapping seasonOPT = event.getOption("season");
                 OptionMapping eventsAdvancedOPT = event.getOption("advanced");
-                int season = seasonOPT == null
+               int season = seasonOPT == null
                         ? DEFAULT_SEASON // default
                         : seasonOPT.getAsInt();
                 int team = teamNumber.getAsInt();
+
 
                 Boolean eventsAdvanced = eventsAdvancedOPT == null
                         ? false // default
@@ -151,20 +152,27 @@ public class BotCommands extends ListenerAdapter {
 
 
                 int length = FTCAPI.GetEvent(eb, team, 0, INLINE, season, eventsAdvanced);
+                if (length == 0) {
+                    eb.setDescription("No events found for team " + team);
+                    eventHook.sendMessageEmbeds(eb.build())
+                            .addActionRow(
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
+                            )
+                            .queue();
+                } else {
 
 
+                    String userId = userID;
 
 
-                String userId = userID;
-
-
-                eventHook.sendMessageEmbeds(eb.build())
-                        .addActionRow(
-                                Button.primary(userId + ":event:0:left:" + team + ":" + length+":"+eventsAdvanced, fromUnicode("⬅")),
-                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
-                                Button.primary(userId + ":event:0:right:" + team + ":" + length+":"+eventsAdvanced, fromUnicode("➡"))
-                        )
-                        .queue();
+                    eventHook.sendMessageEmbeds(eb.build())
+                            .addActionRow(
+                                    Button.primary(userId + ":event:0:left:" + team + ":" + length + ":" + eventsAdvanced, fromUnicode("⬅")),
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
+                                    Button.primary(userId + ":event:0:right:" + team + ":" + length + ":" + eventsAdvanced, fromUnicode("➡"))
+                            )
+                            .queue();
+                }
             }
             break;
             case "team-league-rank": {
@@ -420,7 +428,7 @@ break;
                 eb.setTitle("Event ranking for team " + team);
                 eb.setColor(MAIN_COLOR);
 
-                FTCAPI.GetAward(eb, 2022, INLINE);
+                FTCAPI.GetAward(eb, DEFAULT_SEASON, INLINE);
 
                         //event.replyEmbeds(eb.build()).queue();
                 eventHook.sendMessageEmbeds(eb.build()).queue();
@@ -477,7 +485,7 @@ break;
                 OptionMapping teamNumber = event.getOption("teamnumber");
                 int team = teamNumber.getAsInt();
 
-                eb.setTitle("predictftc.org for team " + team, "https://predictftc.org/2022/team/" + team);
+                eb.setTitle("predictftc.org for team " + team, "https://predictftc.org/"+DEFAULT_SEASON+"/team/" + team);
                 eb.setColor(MAIN_COLOR);
 
                 eb.setDescription("Note: predictftc does not have an api so it is just linked, click on the title.");
@@ -485,7 +493,7 @@ break;
                        event.replyEmbeds(eb.build())
                        .addActionRow(
                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
-                                Button.link("https://predictftc.org/2022/team/" + team, "predictftc.org")
+                                Button.link("https://predictftc.org/"+DEFAULT_SEASON+"/team/" + team, "predictftc.org")
                                         .withEmoji(Emoji.fromUnicode("\uD83D\uDD17"))
                        )
                        .queue();
@@ -494,31 +502,43 @@ break;
             case "scout-event": {
                 event.deferReply().queue();
 
-                // https://github.com/DV8FromTheWorld/JDA/blob/8852b5e9ed07182deaed284a067b1fe68da5936a/src/examples/java/SlashBotExample.java#L195
                 OptionMapping teamNumber = event.getOption("teamnumber");
+                OptionMapping season = event.getOption("season");
                 int team = teamNumber.getAsInt();
+                int seasonInt = season != null ? season.getAsInt() : DEFAULT_SEASON;
 
 
                 eb.setTitle("ftcscout.org for team " + team);
                 eb.setColor(MAIN_COLOR);
-
-
-                JSONArray events = ftcScoutAPI.teamStatsByNumberRequest(team).getJSONObject("data").getJSONObject("teamByNumber").getJSONArray("events");
-
+                JSONObject teamStats = ftcScoutAPI.teamStatsByNumberRequest(team, seasonInt);
+                JSONArray events;
+                if (teamStats == null) {
+                    //Error getting data
+                    eb.setTitle("Error");
+                    eb.setColor(ERROR_COLOR);
+                    eb.setDescription("Team " + team + " not found\nThis might be an error with the season, try changing the season when running the command.");
+                    eventHook.sendMessageEmbeds(eb.build())
+                            .addActionRow(
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
+                            )
+                            .queue();
+                    return;
+                } else {
+                     events = teamStats.getJSONObject("data").getJSONObject("teamByNumber").getJSONArray("events");
+                }
                 FTCScoutAPI.getTeamStatsByNumberEmbed(eb, events, 0, true, INLINE);
 
-//                System.out.println(events);
 
 
 
-                        //event.replyEmbeds(eb.build()).queue();
-                eventHook.sendMessageEmbeds(eb.build())
-                        .addActionRow(
-                                Button.primary(event.getUser().getId() + ":scout:0:left:" + team + ":" + events.length(), fromUnicode("⬅")),
-                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
-                                Button.primary(event.getUser().getId() + ":scout:0:right:" + team + ":" + events.length(), fromUnicode("➡"))
-                        )
-                        .queue();
+                    eventHook.sendMessageEmbeds(eb.build())
+                            .addActionRow(
+                                    Button.primary(event.getUser().getId() + ":scout:0:left:" + team + ":" + events.length()+":"+seasonInt, fromUnicode("⬅")),
+                                    Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
+                                    Button.primary(event.getUser().getId() + ":scout:0:right:" + team + ":" + events.length()+":"+seasonInt, fromUnicode("➡"))
+                            )
+                            .queue();
+
                 break;
             }
             case "scout": {
@@ -526,19 +546,23 @@ break;
 
                 // https://github.com/DV8FromTheWorld/JDA/blob/8852b5e9ed07182deaed284a067b1fe68da5936a/src/examples/java/SlashBotExample.java#L195
                 OptionMapping teamNumber = event.getOption("teamnumber");
+                OptionMapping season = event.getOption("season");
                 int team = teamNumber.getAsInt();
+                int seasonInt = season != null ? season.getAsInt() : DEFAULT_SEASON;
+
 
 
                 eb.setTitle("ftcscout.org for team " + team);
                 eb.setColor(MAIN_COLOR);
 
-                JSONObject teamStats = ftcScoutAPI.teamStatsByNumberRequest(team);
+                JSONObject teamStats = ftcScoutAPI.teamStatsByNumberRequest(team,seasonInt);
                 JSONObject teamByNumber = null;
-                try {
-                     teamByNumber = teamStats.getJSONObject("data").getJSONObject("teamByNumber");
-                } catch (JSONException e) {
+
+
+                if (teamStats == null) {
                     eb.setTitle("Team not found");
-                    eb.setDescription("Team " + team + " not found");
+                    eb.setDescription("Team " + team + " not found\nThis might be an error with the season, try changing the season when running the command.");
+
                     eb.setColor(ERROR_COLOR);
                     eventHook.sendMessageEmbeds(eb.build()).setEphemeral(true)
                             .addActionRow(
@@ -547,6 +571,8 @@ break;
                             ).queue();
                     return;
                 }
+                teamByNumber = teamStats.getJSONObject("data").getJSONObject("teamByNumber");
+
                 JSONArray events = teamByNumber.getJSONArray("events");
 
                 String teamName = teamByNumber.getString("name");

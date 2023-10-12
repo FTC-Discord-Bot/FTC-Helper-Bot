@@ -28,9 +28,11 @@ public class CommandsUpdater {
                 Commands.slash("predict", "predictftc.org for a team")
                         .addOption(OptionType.INTEGER, "teamnumber", "Team Number",true),
                 Commands.slash("scout", "ftcscout.org for a team")
-                        .addOption(OptionType.INTEGER, "teamnumber", "Team Number",true),
+                        .addOption(OptionType.INTEGER, "teamnumber", "Team Number",true)
+                        .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
                 Commands.slash("scout-event", "ftcscout.org for a team")
-                        .addOption(OptionType.INTEGER, "teamnumber", "Team Number",true),
+                        .addOption(OptionType.INTEGER, "teamnumber", "Team Number",true)
+                        .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
                 Commands.slash("ftc-scores", "ftcscores.com for a team")
                         .addOption(OptionType.INTEGER, "teamnumber", "Team Number",true),
                 Commands.slash("learn-java", "Resources for learning Java for FTC"),

@@ -1,5 +1,6 @@
 package com.bot.commands.API;
 
+import com.bot.FTCHelperBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import okhttp3.*;
 import org.json.JSONArray;
@@ -61,10 +62,10 @@ public class FTCScoutAPI {
 
                     return responseData;
                 } else {
-                    throw new RuntimeException("GraphQL request failed with code: " + response.code());
+                    return null;
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Error sending GraphQL request: " + e.getMessage(), e);
+                return null;
             }
 
     }
@@ -145,14 +146,14 @@ public class FTCScoutAPI {
     public static JSONObject eventRankRequest(int season, String code){
         String query = "query{\n" +
                 "  \n" +
-                "  eventByCode(season: ** ,code:\"$$\") {\n" +
+                "  eventByCode(season: "+season+",code: "+code+") {\n" +
                 "    teams {\n" +
                 "      team {\n" +
                 "        number\n" +
                 "        name\n" +
                 "      }\n" +
                 "      stats {\n" +
-                "        ...on TeamEventStats2022 {\n" +
+                "        ...on TeamEventStats"+season+" {\n" +
                 "          rank\n" +
                 "          \n" +
                 "        }\n" +
@@ -160,8 +161,7 @@ public class FTCScoutAPI {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        query = query.replace("**", String.valueOf(season));
-        query = query.replace("$$", code);
+
 
         JSONObject cachedResponse = eventRank.get(code);
         if (cachedResponse != null){
@@ -217,21 +217,21 @@ public class FTCScoutAPI {
         return df.format(d);
     }
 
-    public static JSONObject teamStatsByNumberRequest(int team){
+    public static JSONObject teamStatsByNumberRequest(int team, int season){
         JSONObject cachedResponse = teamStatsByNumber.get(team);
         if (cachedResponse != null) {
             return cachedResponse;
         } else {
             FTCScoutAPI api = new FTCScoutAPI();
             String graphQlQuery = ("query {\n" +
-                    "  teamByNumber(number: <>) {\n" +
+                    "  teamByNumber(number: "+team+") {\n" +
                     "    number\n" +
                     "    name\n" +
-                    "    events(season: 2022) {\n" +
+                    "    events(season: "+season+") {\n" +
                     "      eventCode\n" +
                     "      teamNumber\n" +
                     "      stats {\n" +
-                    "        ... on TeamEventStats2022 {\n" +
+                    "        ... on TeamEventStats"+season+" {\n" +
                     "          opr {\n" +
                     "            autoNavigationPoints\n" +
                     "            autoNavigationPointsIndividual\n" +
@@ -263,7 +263,7 @@ public class FTCScoutAPI {
                     "      }\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}").replace("<>", String.valueOf(team));
+                    "}");
 
             JSONObject response = api.sendGraphQLRequest(graphQlQuery);
 
@@ -284,14 +284,13 @@ public class FTCScoutAPI {
 
     public static void getTeamStatsByNumberEmbed(EmbedBuilder eb, JSONArray events, int index, boolean eventMode, boolean inline) {
         JSONObject eventdata = events.getJSONObject(index);
-
+        if (eventdata == null) {
+        }
         addField(eb, "Team: ", eventdata.get("teamNumber"), inline);
         JSONObject stats = null;
         try {
              stats = eventdata.getJSONObject("stats");
-            // Your code to handle the "stats" JSON object goes here
         } catch (JSONException e) {
-
         }
         JSONObject opr = null;
         if (stats != null) {
@@ -311,7 +310,6 @@ public class FTCScoutAPI {
                 o = events.getJSONObject(i).getJSONObject("stats").getJSONObject("opr").getInt("totalPointsNp");
                 topopr = o > topopr ? o : topopr;
             } catch (JSONException e) {
-
             }
 
         }
@@ -345,7 +343,6 @@ public class FTCScoutAPI {
             int length = events.length();
             eb.setFooter("Page " + (index + 1) + "/" + length);
         }
-
     }
 
         public static JSONObject eventsSearchRequest(String query, int season) {
@@ -457,11 +454,11 @@ public class FTCScoutAPI {
                 "  teamByNumber(number: 13190) {\n" +
                 "    number\n" +
                 "    name\n" +
-                "    events(season: 2022) {\n" +
+                "    events(season: "+FTCHelperBot.DEFAULT_SEASON+") {\n" +
                 "      eventCode\n" +
                 "      teamNumber\n" +
                 "      stats {\n" +
-                "        ... on TeamEventStats2022 {\n" +
+                "        ... on TeamEventStats"+FTCHelperBot.DEFAULT_SEASON+" {\n" +
                 "          opr {\n" +
                 "            autoNavigationPoints\n" +
                 "            autoNavigationPointsIndividual\n" +

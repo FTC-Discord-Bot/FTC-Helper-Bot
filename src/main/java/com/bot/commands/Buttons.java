@@ -560,6 +560,7 @@ public class Buttons extends ListenerAdapter {
                 String direction = id[3];
                 int team = Integer.parseInt(id[4]);
                 int length = Integer.parseInt(id[5]);
+                int season = Integer.parseInt(id[6]);
 
                 if (direction.equals("right")) {
                     if (currentIndex + 1 >= length) {
@@ -580,7 +581,7 @@ public class Buttons extends ListenerAdapter {
                 eb.setTitle("ftcscout.org for team " + team);
                 eb.setColor(MAIN_COLOR);
 
-                JSONArray events = ftcScoutAPI.teamStatsByNumberRequest(team).getJSONObject("data").getJSONObject("teamByNumber").getJSONArray("events");
+                JSONArray events = ftcScoutAPI.teamStatsByNumberRequest(team,season).getJSONObject("data").getJSONObject("teamByNumber").getJSONArray("events");
 
                 FTCScoutAPI.getTeamStatsByNumberEmbed(eb, events, currentIndex, true, INLINE);
 
@@ -589,9 +590,9 @@ public class Buttons extends ListenerAdapter {
                 event.editMessage(event.getMessage().getContentDisplay())
                         .setEmbeds(eb.build())
                         .setActionRow(
-                                Button.primary(event.getUser().getId() + ":scout:" + currentIndex + ":left:" + team + ":" + length, fromUnicode("⬅")),
+                                Button.primary(event.getUser().getId() + ":scout:" + currentIndex + ":left:" + team + ":" + length+":"+season, fromUnicode("⬅")),
                                 Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
-                                Button.primary(event.getUser().getId() + ":scout:" + currentIndex + ":right:" + team + ":" + length, fromUnicode("➡"))
+                                Button.primary(event.getUser().getId() + ":scout:" + currentIndex + ":right:" + team + ":" + length+":"+season, fromUnicode("➡"))
                         )
                         .queue();
             }

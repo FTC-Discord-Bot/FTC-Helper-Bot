@@ -425,8 +425,13 @@ public class FTCAPI {
     }
     public static int GetEvent(EmbedBuilder eb, int team, int index, boolean inline, int season, Boolean advanced) {
         JSONArray events = GetEventAPI(team, season);
+
 eb.clearFields();
+        if (events.isEmpty()){
+            return 0;
+        }
      JSONObject eventdata = events.getJSONObject(index);
+
 if (advanced) {
 
     addField(eb, "Name: ", eventdata.get("name"), inline);
