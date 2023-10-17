@@ -127,7 +127,8 @@ public class CommandsUpdater {
                                         .addChoice("Metric", "metric")),
                 Commands.slash("event-forecast","Get the forecast for an event")
                         .addOption(OptionType.STRING, "event","Event Code ex (USCANOSBM1A) use /events to find the code", true)
-                        .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false)
+                        .addOption(OptionType.INTEGER, "season", "Season ex (2022)", false),
+                Commands.slash("vote-best-name","Vote for the best team name, winner will be revealed on ftcscout.org")
 
         ).queue();
     }

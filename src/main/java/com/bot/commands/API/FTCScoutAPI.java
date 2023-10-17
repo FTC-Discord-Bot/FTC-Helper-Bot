@@ -69,7 +69,45 @@ public class FTCScoutAPI {
             }
 
     }
+    public static JSONObject getBestName(){
+        FTCScoutAPI api = new FTCScoutAPI();
 
+        String graphqlQuery = "query {\n" +
+                "  getBestName {\n" +
+                "    id\n" +
+                "    team1 {\n" +
+                "      number\n" +
+                "      name\n" +
+                "    }\n" +
+                "    team2 {\n" +
+                "      number\n" +
+                "      name\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n";
+        JSONObject response = api.sendGraphQLRequest(graphqlQuery);
+        return  response;
+    }
+
+    public static JSONObject voteBestName(int id, int vote){
+        FTCScoutAPI api = new FTCScoutAPI();
+
+        String graphqlQuery = "mutation {\n" +
+                "  voteBestName(id: "+id+", vote: "+vote+") {\n" +
+                "    id\n" +
+                "    team1 {\n" +
+                "      number\n" +
+                "      name\n" +
+                "    }\n" +
+                "    team2 {\n" +
+                "      number\n" +
+                "      name\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+        JSONObject response = api.sendGraphQLRequest(graphqlQuery);
+        return  response;
+    }
 
     public static JSONObject teamSearchByNameRequest(String query){
         JSONObject chachedResponse = teamSearchByName.get(query);

@@ -929,7 +929,7 @@ break;
 
 
                 break;
-            case "forecast":
+            case "forecast": {
 
 
                 OptionMapping teamNumber2 = event.getOption("teamnumber");
@@ -939,14 +939,15 @@ break;
                 if (location2.toString().contains("Error")) {
                     eb.setTitle(location2.toString());
                     eb.setColor(ERROR_COLOR);
-                                event.replyEmbeds(eb.build()).setEphemeral(true).queue();
+                    event.replyEmbeds(eb.build()).setEphemeral(true).queue();
                     return;
                 }
                 eb.setTitle("Weather for team : " + team2);
 
-                if (forecast(event, eb, location2,1)) return;
+                if (forecast(event, eb, location2, 1)) return;
 
                 break;
+            }
             case "docs":
 
 
@@ -2278,6 +2279,37 @@ Code X API is not working for the time being so the command is disabled
                 if (forecast(event, eb, textLocation,2)) return;
 
 
+                break;
+            }
+
+            case "vote-best-name":{
+                JSONObject bestNameResponse = ftcScoutAPI.getBestName();
+                JSONObject data = bestNameResponse.getJSONObject("data");
+
+                JSONObject getBestName = data.getJSONObject("getBestName");
+
+                int id = getBestName.getInt("id");
+
+                JSONObject team1 = getBestName.getJSONObject("team1");
+                int team1Number = team1.getInt("number");
+                String team1Name = team1.getString("name");
+
+                JSONObject team2 = getBestName.getJSONObject("team2");
+                int team2Number = team2.getInt("number");
+                String team2Name = team2.getString("name");
+
+                eb.setTitle(" Vote : The Best Team Name");
+                eb.setDescription(team1Name+" or "+team2Name);
+                eb.setFooter("Vote between two random names, results will be revealed on a blog post on ftcscout.org","https://user-images.githubusercontent.com/24487638/261329471-2f0034fc-6c5d-48f3-ae66-ac1acf5fff48.png");
+                eb.setColor(MAIN_COLOR);
+                event.replyEmbeds(eb.build()).setEphemeral(false)
+                        .addActionRow(
+                                Button.primary(event.getUser().getId() + ":vote-best-name:"+id+":"+team1Number,team1Name),
+                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
+                                Button.primary(event.getUser().getId() + ":vote-best-name:"+id+":"+team2Number,team2Name)
+
+                        )
+                        .queue();
                 break;
             }
 

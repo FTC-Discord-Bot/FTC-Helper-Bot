@@ -596,6 +596,40 @@ public class Buttons extends ListenerAdapter {
                         )
                         .queue();
             }
+            case "vote-best-name":{
+                String userID = id[0];
+                int idToVote = Integer.parseInt(id[2]);
+                int numberToVote = Integer.parseInt(id[3]);
+                JSONObject bestNameResponse = ftcScoutAPI.voteBestName(idToVote,numberToVote);
+                JSONObject data = bestNameResponse.getJSONObject("data");
+
+                JSONObject getBestName = data.getJSONObject("voteBestName");
+
+                int idBestName = getBestName.getInt("id");
+
+                JSONObject team1 = getBestName.getJSONObject("team1");
+                int team1Number = team1.getInt("number");
+                String team1Name = team1.getString("name");
+
+                JSONObject team2 = getBestName.getJSONObject("team2");
+                int team2Number = team2.getInt("number");
+                String team2Name = team2.getString("name");
+
+                eb.setTitle(" Vote : The Best Team Name");
+                eb.setDescription(team1Name+" or "+team2Name);
+                eb.setFooter("Vote between two random names, results will be revealed on a blog post on ftcscout.org","https://user-images.githubusercontent.com/24487638/261329471-2f0034fc-6c5d-48f3-ae66-ac1acf5fff48.png");
+                eb.setColor(MAIN_COLOR);
+                event.editMessage(event.getMessage().getContentDisplay())
+                        .setEmbeds(eb.build())
+                        .setActionRow(
+                                Button.primary(event.getUser().getId() + ":vote-best-name:"+idBestName+":"+team1Number,team1Name),
+                                Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F")),
+                                Button.primary(event.getUser().getId() + ":vote-best-name:"+idBestName+":"+team2Number,team2Name)
+
+                        )
+                        .queue();
+                break;
+            }
 
 
                 default:
