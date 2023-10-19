@@ -166,7 +166,6 @@ public class FTCScoutAPI {
         if (cachedResponse != null){
             return cachedResponse;
         } else {
-            System.out.println(pdtTimestamp);
             FTCScoutAPI api = new FTCScoutAPI();
             String query = "query {\n" +
                     "  eventsOnDate(date: \""+pdtTimestamp+"\") {\n" +
