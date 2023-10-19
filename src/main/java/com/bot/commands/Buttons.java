@@ -461,12 +461,15 @@ public class Buttons extends ListenerAdapter {
 
                 JSONObject response = ftcScoutAPI.todaysEvents();
                 JSONObject data = response.getJSONObject("data");
-                JSONArray events = data.getJSONArray("todaysEvents");
+                JSONArray events = data.getJSONArray("eventsOnDate");
+
                 JSONObject eventCurrent = events.getJSONObject(currentIndex);
+                JSONObject locationEvent = eventCurrent.getJSONObject("location");
+
                 String eventName = eventCurrent.getString("name");
-                String eventCountry = eventCurrent.getString("country");
-                String eventState = eventCurrent.getString("stateOrProvince");
-                String eventCity = eventCurrent.getString("city");
+                String eventCountry = locationEvent.getString("country");
+                String eventState = locationEvent.getString("state");
+                String eventCity = locationEvent.getString("city");
                 String eventLocation = eventCity + ", " + eventState + ", " + eventCountry;
                 String eventAddress = eventCurrent.getString("address");
                 String eventCode = eventCurrent.getString("code");

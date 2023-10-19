@@ -8,12 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.zone.ZoneRules;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 import static com.bot.commands.API.FTCAPI.addField;
@@ -148,31 +150,43 @@ public class FTCScoutAPI {
 
     public static JSONObject todaysEvents(){
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-        String strDate = formatter.format(date);
-        JSONObject cachedResponse = todaysEvents.get(strDate);
+        ZoneId pacificTimezone = ZoneId.of("America/Los_Angeles");
+        ZonedDateTime utcDateTime = ZonedDateTime.now(ZoneId.of("UTC"));
+
+        ZoneRules zoneRules = pacificTimezone.getRules();
+        ZoneOffset currentOffset = zoneRules.getOffset(utcDateTime.toInstant());
+
+        ZoneId targetTimezone = currentOffset == ZoneOffset.ofHours(-8) ? ZoneId.of("America/Los_Angeles") : ZoneId.of("America/Los_Angeles");
+
+        ZonedDateTime pdtDateTime = utcDateTime.withZoneSameInstant(targetTimezone);
+
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String pdtTimestamp = pdtDateTime.format(formatterDate);
+        JSONObject cachedResponse = todaysEvents.get(pdtTimestamp);
         if (cachedResponse != null){
             return cachedResponse;
         } else {
+            System.out.println(pdtTimestamp);
             FTCScoutAPI api = new FTCScoutAPI();
             String query = "query {\n" +
-                    "  todaysEvents{\n" +
+                    "  eventsOnDate(date: \""+pdtTimestamp+"\") {\n" +
                     "    name \n" +
-                    "    country\n" +
-                    "    stateOrProvince\n" +
-                    "  \tcity\n" +
+                    "    location{\n" +
+                    "      city\n" +
+                    "      state \n" +
+                    "      country\n" +
+                    "    }\n" +
                     "    address\n" +
                     "    code\n" +
                     "  }\n" +
-                    "}";
+                    "}\n";
             JSONObject response = api.sendGraphQLRequest(query);
-
                 if (todaysEvents.size() == 1) {
                     // If the map size exceeds the maximum, remove the oldest entry (first inserted).
                     String oldestKey = todaysEvents.keySet().iterator().next();
                     todaysEvents.remove(oldestKey);
                 }
-                todaysEvents.put(strDate, response);
+                todaysEvents.put(pdtTimestamp, response);
 
                  return response;
 

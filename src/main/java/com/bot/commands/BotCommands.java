@@ -2024,7 +2024,7 @@ Code X API is not working for the time being so the command is disabled
                 } else {
                     // Get Array length
                     JSONObject data = response.getJSONObject("data");
-                    JSONArray events = data.getJSONArray("todaysEvents");
+                    JSONArray events = data.getJSONArray("eventsOnDate");
                     int todaysEventCount = events.length();
                     if (todaysEventCount == 0){
                         eb.setTitle("No events today");
@@ -2035,12 +2035,13 @@ Code X API is not working for the time being so the command is disabled
                         eb.setTitle("Events Today");
                         // Get data about each event
                         JSONObject event1 = events.getJSONObject(0);
+                        JSONObject locationEvent1 = event1.getJSONObject("location");
                         String event1Name = event1.getString("name");
 
 
-                        String event1Country = event1.getString("country");
-                        String event1State = event1.getString("stateOrProvince");
-                        String event1City = event1.getString("city");
+                        String event1Country = locationEvent1.getString("country");
+                        String event1State = locationEvent1.getString("state");
+                        String event1City = locationEvent1.getString("city");
                         String event1Location = event1City + ", " + event1State + ", " + event1Country;
                         String event1Address = event1.getString("address");
                         String event1Code = event1.getString("code");
@@ -2066,9 +2067,8 @@ Code X API is not working for the time being so the command is disabled
                                 )
                                 .queue();
                     }
-                break;
                 }
-
+            break;
             }
             case "events-search": {
                 OptionMapping query = event.getOption("query");
