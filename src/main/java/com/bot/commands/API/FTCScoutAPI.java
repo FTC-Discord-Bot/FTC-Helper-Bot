@@ -168,7 +168,7 @@ public class FTCScoutAPI {
         } else {
             FTCScoutAPI api = new FTCScoutAPI();
             String query = "query {\n" +
-                    "  eventsOnDate(date: null) {\n" +
+                    "  eventsOnDate(date: null, type: Competition) {\n" +
                     "    name \n" +
                     "    location{\n" +
                     "      city\n" +
