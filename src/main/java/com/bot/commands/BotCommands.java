@@ -2300,7 +2300,7 @@ Code X API is not working for the time being so the command is disabled
 
                 eb.setTitle(" Vote : The Best Team Name");
                 eb.setDescription(team1Name+" or "+team2Name);
-                eb.setFooter("Vote between two random names, results will be revealed on a blog post on ftcscout.org","https://user-images.githubusercontent.com/24487638/261329471-2f0034fc-6c5d-48f3-ae66-ac1acf5fff48.png");
+                eb.setFooter("Vote between two random names; the results will be revealed in a blog post on ftcscout.org","https://user-images.githubusercontent.com/24487638/261329471-2f0034fc-6c5d-48f3-ae66-ac1acf5fff48.png");
                 eb.setColor(MAIN_COLOR);
                 event.replyEmbeds(eb.build()).setEphemeral(false)
                         .addActionRow(

@@ -55,7 +55,6 @@ public class GitHubAPI {
         URL url = new URL("https://api.github.com/repos/" + OwnerRepo + "/commits/" + sha);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-
         if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
