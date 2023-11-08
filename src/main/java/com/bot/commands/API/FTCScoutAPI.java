@@ -23,7 +23,7 @@ import static com.bot.commands.API.FTCAPI.addField;
 public class FTCScoutAPI {
     // CACHES
     public static Map<String, JSONObject> teamSearchByName = new HashMap<>();
-    public static Map<Integer, JSONObject> teamStatsByNumber = new HashMap<>();
+    public static Map<String, JSONObject> teamStatsByNumber = new HashMap<>();
     public static Map<String, JSONObject> todaysEvents = new HashMap<>();
     public static Map<String, JSONObject> eventRank = new HashMap<>();
     public static Map<String, JSONObject> eventsSearch = new HashMap<>();
@@ -269,7 +269,7 @@ public class FTCScoutAPI {
     }
 
     public static JSONObject teamStatsByNumberRequest(int team, int season){
-        JSONObject cachedResponse = teamStatsByNumber.get(team);
+        JSONObject cachedResponse = teamStatsByNumber.get(team+": "+season);
         if (cachedResponse != null) {
             return cachedResponse;
         } else {
@@ -284,31 +284,10 @@ public class FTCScoutAPI {
                     "      stats {\n" +
                     "        ... on TeamEventStats"+season+" {\n" +
                     "          opr {\n" +
-                    "            autoNavigationPoints\n" +
-                    "            autoNavigationPointsIndividual\n" +
-                    "            autoConePoints\n" +
-                    "            autoTerminalPoints\n" +
-                    "            autoGroundPoints\n" +
-                    "            autoLowPoints\n" +
-                    "            autoMediumPoints\n" +
-                    "            autoHighPoints\n" +
-                    "            dcTerminalPoints\n" +
-                    "            dcGroundPoints\n" +
-                    "            dcLowPoints\n" +
-                    "            dcMediumPoints\n" +
-                    "            dcHighPoints\n" +
-                    "            endgameNavigationPoints\n" +
-                    "            endgameNavigationPointsIndividual\n" +
-                    "            ownershipPoints\n" +
-                    "            coneOwnershipPoints\n" +
-                    "            beaconOwnershipPoints\n" +
-                    "            circuitPoints\n" +
-                    "            autoPoints\n" +
+                    "       autoPoints\n" +
                     "            dcPoints\n" +
-                    "            endgamePoints\n" +
-                    "            penaltyPoints\n" +
                     "            totalPoints\n" +
-                    "            totalPointsNp\n" +
+                    "            totalPointsNp" +
                     "          }\n" +
                     "        }\n" +
                     "      }\n" +
@@ -319,11 +298,11 @@ public class FTCScoutAPI {
             JSONObject response = api.sendGraphQLRequest(graphQlQuery);
 
             if (response != null) {
-                teamStatsByNumber.put(team, response);
+                teamStatsByNumber.put(team+":"+season, response);
 
                 if (teamStatsByNumber.size() > 10) {
                     // If the map size exceeds the maximum, remove the oldest entry (first inserted).
-                    Integer oldestKey = teamStatsByNumber.keySet().iterator().next();
+                    String oldestKey = teamStatsByNumber.keySet().iterator().next();
                     teamStatsByNumber.remove(oldestKey);
                 }
             }
