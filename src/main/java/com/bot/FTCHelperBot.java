@@ -81,7 +81,7 @@ public class FTCHelperBot {
 
 
          jda = JDABuilder.createDefault(DISCORD_TOKEN)
-                .setActivity(Activity.playing("Vote /vote-best-name"))
+                .setActivity(Activity.playing("/help"))
                  .addEventListeners(
                          new BotCommands(),
                          new Buttons(),
