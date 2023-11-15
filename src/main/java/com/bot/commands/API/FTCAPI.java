@@ -344,12 +344,19 @@ public class FTCAPI {
         JSONArray events;
         if (obj == null) {
             JSONObject data = FTCAPI.GetJSONC("http://ftc-api.firstinspires.org/v2.0/" + season + "/events?teamNumber=" + team);
+            if (!data.has("events")){
+                return null;
+            }
             events = data.getJSONArray("events");
             CacheSet(EventCache, team, events,10);
         } else {
             events = (JSONArray) obj;
         }
-        return events;
+        if (events.isEmpty()){
+            return null;
+        } else {
+            return events;
+        }
     }
 
     public static JSONArray GetEventAPICode(String code, int season) {
@@ -426,8 +433,8 @@ public class FTCAPI {
     public static int GetEvent(EmbedBuilder eb, int team, int index, boolean inline, int season, Boolean advanced) {
         JSONArray events = GetEventAPI(team, season);
 
-eb.clearFields();
-        if (events.isEmpty()){
+        eb.clearFields();
+        if (events == null){
             return 0;
         }
      JSONObject eventdata = events.getJSONObject(index);

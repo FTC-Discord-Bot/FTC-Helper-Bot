@@ -253,6 +253,7 @@ public class Buttons extends ListenerAdapter {
 
             case "delete":
                 if (event.getUser().getId().equals(id[0]) || event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
+                    event.deferEdit().queue();
                     event.getMessage().delete().queue();
                     System.out.println("Deleted message " + event.getMessage().getId());
                 } else {
@@ -408,9 +409,10 @@ public class Buttons extends ListenerAdapter {
                 String teamName = team.getString("name");
                     int teamNumber = team.getInt("number");
                     String teamSchoolName = team.getString("schoolName");
-                    String teamCountry = team.getString("country");
-                    String teamState = team.getString("stateOrProvince");
-                    String teamCity = team.getString("city");
+                    JSONObject teamLocationJSON = team.getJSONObject("location");
+                    String teamCountry = teamLocationJSON.getString("country");
+                    String teamState = teamLocationJSON.getString("state");
+                    String teamCity = teamLocationJSON.getString("city");
                     String teamLocation = teamCity + ", " + teamState + ", " + teamCountry;
 
                     eb.setTitle("Team Search Results for query: " + queryStr);
@@ -528,15 +530,10 @@ public class Buttons extends ListenerAdapter {
                 // Get data about each event
                 JSONObject eventCurrent = events.getJSONObject(currentIndex);
                 String eventCurrentName = eventCurrent.getString("name");
-                String eventCurrentCountry = eventCurrent.getString("country");
-                String eventCurrentState = eventCurrent.getString("stateOrProvince");
-                String eventCurrentCity = eventCurrent.getString("city");
-                String eventCurrentLocation = eventCurrentCity + ", " + eventCurrentState + ", " + eventCurrentCountry;
                 String eventCurrentAddress = eventCurrent.getString("address");
                 String eventCurrentCode = eventCurrent.getString("code");
 
                 eb.addField("Name", eventCurrentName, false);
-                eb.addField("Location", eventCurrentLocation, false);
                 try {
                     eb.addField("Address", "[" + eventCurrentAddress + "](" + directionsUrl(eventCurrentAddress) + ")", false);
                 } catch (UnsupportedEncodingException e) {

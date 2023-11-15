@@ -148,18 +148,19 @@ public class BotCommands extends ListenerAdapter {
                         : eventsAdvancedOPT.getAsBoolean();
 
                 eb.setTitle("Events for team " + team);
-                eb.setColor(MAIN_COLOR);
 
 
                 int length = FTCAPI.GetEvent(eb, team, 0, INLINE, season, eventsAdvanced);
                 if (length == 0) {
-                    eb.setDescription("No events found for team " + team);
+                    eb.setColor(ERROR_COLOR);
+                    eb.setDescription("No events found for team " + team+" , season " + season);
                     eventHook.sendMessageEmbeds(eb.build())
                             .addActionRow(
                                     Button.danger(event.getUser().getId() + ":delete", fromUnicode("\uD83D\uDDD1\uFE0F"))
                             )
                             .queue();
                 } else {
+                    eb.setColor(MAIN_COLOR);
 
 
                     String userId = userID;
@@ -1987,9 +1988,10 @@ Code X API is not working for the time being so the command is disabled
                         String team1Name = team1.getString("name");
                         int team1Number = team1.getInt("number");
                         String team1SchoolName = team1.getString("schoolName");
-                        String team1Country = team1.getString("country");
-                        String team1State = team1.getString("stateOrProvince");
-                        String team1City = team1.getString("city");
+                        JSONObject team1LocationJSON = team1.getJSONObject("location");
+                        String team1Country = team1LocationJSON.getString("country");
+                        String team1State = team1LocationJSON.getString("state");
+                        String team1City = team1LocationJSON.getString("city");
                         String team1Location = team1City + ", " + team1State + ", " + team1Country;
 
                         eb.setTitle("Team Search Results for query: " + queryStr);
@@ -2099,15 +2101,10 @@ Code X API is not working for the time being so the command is disabled
                         // Get data about each event
                         JSONObject event1 = events.getJSONObject(0);
                         String event1Name = event1.getString("name");
-                        String event1Country = event1.getString("country");
-                        String event1State = event1.getString("stateOrProvince");
-                        String event1City = event1.getString("city");
-                        String event1Location = event1City + ", " + event1State + ", " + event1Country;
                         String event1Address = event1.getString("address");
                         String event1Code = event1.getString("code");
 
                         eb.addField("Name", event1Name, false);
-                        eb.addField("Location", event1Location, false);
 
                         try {
                             eb.addField("Address", "[" + event1Address + "](" + directionsUrl(event1Address) + ")", false);
