@@ -19,7 +19,7 @@ dependencies {
     implementation('org.json:json:20231013')
     implementation('org.jsoup:jsoup:1.16.1')
     implementation 'com.graphql-java:graphql-java:21.1'
-    implementation 'org.slf4j:slf4j-simple:2.0.9'
+    implementation 'org.slf4j:slf4j-simple:2.0.13'
 
 
 
