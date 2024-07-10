@@ -6,7 +6,7 @@ plugins {
 
 mainClassName = 'FTC_Dis_Bot.java'
 version '1.0'
-def jdaVersion = '5.0.0-beta.19'
+def jdaVersion = '5.0.0'
 group 'org.example'
 version '1.0-SNAPSHOT'
 
