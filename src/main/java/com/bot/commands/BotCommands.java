@@ -131,8 +131,8 @@ public class BotCommands extends ListenerAdapter {
             break;
             case "events": {
 
-
-                event.deferReply().queue();
+// Unknown Issue, removing it and recommending scout-event instead
+                //event.deferReply().queue();
 
                 OptionMapping teamNumber = event.getOption("teamnumber");
                 OptionMapping seasonOPT = event.getOption("season");
@@ -1039,13 +1039,7 @@ break;
 
             case "game-manual":
 
-
-                eb.setTitle("Game Manual");
-                eb.setDescription("The Game Manual is the official guide to the FIRST Tech Challenge game.");
-                eb.addField("Game Manual 1 :books: :one: - Traditional", "[Traditional events 1](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-1-traditional.pdf)", false);
-                eb.addField("Game Manual 1 :books: :one: - Remote ", "[Remote events 1](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-1-remote.pdf)", false);
-                eb.addField("Game Manual 2 :books: :two: - Traditional", "[Traditional events 2](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-2-traditional.pdf)", false);
-                eb.addField("Game Manual 2 :books: :two: - Remote", "[Remote events 2](https://firstinspiresst01.blob.core.windows.net/first-in-show-ftc/game-manual-part-2-remote.pdf)", false);
+                eb.addField("Game Manual :book:","[Competition Manual](https://ftc-resources.firstinspires.org/file/ftc/game/manual)",false);
                 eb.addField("Game Manual 0 :link: ", "[Open source resources for all seasons](https://gm0.org/en/latest/)", false);
                 eb.setColor(MAIN_COLOR);
                         event.replyEmbeds(eb.build()).setEphemeral(false).addActionRow(
@@ -1073,7 +1067,7 @@ Code X API is not working for the time being so the command is disabled
                     isFile = false;
                 } else {
                     isFile = true;
-                    CompletableFuture<InputStream> inputStreamFuture = fileIn.getAsAttachment().retrieveInputStream();
+                    CompletableFuture<InputStream> inputStreamFuture = fileIn.getAsAttachment().getProxy().download();
 
                     // Wait for the CompletableFuture to complete and get the InputStream
                     try {
@@ -1104,7 +1098,7 @@ Code X API is not working for the time being so the command is disabled
                         throw new RuntimeException(e);
                     }
                     if (result.contains("Failed")){
-                        eb.clear();
+                        
                         eb.setTitle("Code Compiler");
                         eb.setDescription(result);
                         eb.setColor(ERROR_COLOR);
@@ -1686,6 +1680,7 @@ Code X API is not working for the time being so the command is disabled
             case "match-results": {
                 int lengthMatchResults = 3;
                 int iterateMatchResults = 0;
+                
 
 
                 OptionMapping eventCodeMatchResults = event.getOption("event");
@@ -1698,7 +1693,6 @@ Code X API is not working for the time being so the command is disabled
 
 
                 JSONArray matchResults = FTCAPI.getMatchResultsAPI(eventCodeStringMatchResults, seasonMatchResultsInt, teamNumberMatchResultsInt);
-
                 //Check if null
                 if (matchResults == null) {
                     eb.setTitle("Error");
@@ -2156,7 +2150,7 @@ Code X API is not working for the time being so the command is disabled
                 eb.setTitle("Help");
                 eb.setColor(MAIN_COLOR);
                 eb.setDescription("Commands list");
-                eb.addField("- team commands", "```team-info (Info about team based on teamNumber)\nteam-awards (All time team awards)\nteam-awards-at-event (Team awards at a specific event)\nscout (Opr info about team)\nscout-event (Opr data at certain team events)\nteam-league-rank (The league rank of a team)\nevents (Get events the team has participated in, true or false for advanced view)\nsearch-teams-by-name (Search for teams by their name)\nweather (Get weather at the teams location)\nforecast (Get forecast at the teams location)```", false);
+                eb.addField("- team commands", "```team-info (Info about team based on teamNumber)\nteam-awards (All time team awards)\nteam-awards-at-event (Team awards at a specific event)\nscout (Opr info about team)\nscout-event (Find all events that a team participated in and opr data from that event)\nteam-league-rank (The league rank of a team)\nsearch-teams-by-name (Search for teams by their name)\nweather (Get weather at the teams location)\nforecast (Get forecast at the teams location)```", false);
                 eb.addField("- event commands", "```event-info (Info about event based on eventCode)\ntodays-events (Events happening today)\nevents-search (Search for events by text query)\nmatch-schedule (Match schedule for an event)\nmatch-results (Results of all matches at event, or specify teamNumber for just those teams matches)\nevent-awards (Get awards for all teams at that event)\nalliance-selection (Alliance selection info at a event)\nalliance-details (Get details about alliance selection at a event)```", false);
                 eb.addField("- learning commands", "```learn-java (Learning resources about Java)\ndocs (Get all sorts of documentation links about FTC topics)\nask-ai (Ask an AI trained on documentation)```", false);
                 eb.addField("Discord server", "https://discord.gg/hC7PkKfCau", false);
@@ -2169,13 +2163,14 @@ Code X API is not working for the time being so the command is disabled
             }
 
             case "event-weather":{
+                
                 OptionMapping eventCodeEventWeather = event.getOption("event");
                 String eventCodeEventWeatherStr = eventCodeEventWeather.getAsString();
                 int seasonEventWeather = event.getOption("season") != null ? event.getOption("season").getAsInt() : DEFAULT_SEASON;
                 OptionMapping selectedUnitEventWeather = event.getOption("measurement-unit");
                 DEFAULT_UNIT = "imperial";
                 String finalUnitEventWeather = selectedUnitEventWeather == null ? DEFAULT_UNIT : selectedUnitEventWeather.getAsString();
-
+                
                 eb.setTitle("Weather for event: " + eventCodeEventWeatherStr);
 
                 eb.setColor(MAIN_COLOR);
@@ -2270,6 +2265,7 @@ Code X API is not working for the time being so the command is disabled
             }
 
             case "event-forecast":{
+                
                 OptionMapping eventCodeWeather = event.getOption("event");
                 String eventCodeEventWeatherStr = eventCodeWeather.getAsString();
                 int seasonEventWeather = event.getOption("season") != null ? event.getOption("season").getAsInt() : DEFAULT_SEASON;
@@ -2297,7 +2293,7 @@ Code X API is not working for the time being so the command is disabled
                 JSONObject team2 = getBestName.getJSONObject("team2");
                 int team2Number = team2.getInt("number");
                 String team2Name = team2.getString("name");
-
+                
                 eb.setTitle(" Vote : The Best Team Name");
                 eb.setDescription(team1Name+" or "+team2Name);
                 eb.setFooter("Vote between two random names; the results will be revealed in a blog post on ftcscout.org","https://user-images.githubusercontent.com/24487638/261329471-2f0034fc-6c5d-48f3-ae66-ac1acf5fff48.png");

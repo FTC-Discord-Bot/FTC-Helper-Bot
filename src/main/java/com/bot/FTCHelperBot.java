@@ -81,7 +81,7 @@ public class FTCHelperBot {
 
 
          jda = JDABuilder.createDefault(DISCORD_TOKEN)
-                .setActivity(Activity.playing("/help"))
+                .setActivity(Activity.playing("INTO THE DEEP"))
                  .addEventListeners(
                          new BotCommands(),
                          new Buttons(),

@@ -454,6 +454,8 @@ public class Buttons extends ListenerAdapter {
                     } else {
                         currentIndex--;
                     }
+
+                    break;
                 }
 
                 eb.clear();
@@ -598,6 +600,8 @@ public class Buttons extends ListenerAdapter {
                                 Button.primary(event.getUser().getId() + ":scout:" + currentIndex + ":right:" + team + ":" + length+":"+season, fromUnicode("➡"))
                         )
                         .queue();
+
+                break;
             }
             case "vote-best-name":{
                 String userID = id[0];

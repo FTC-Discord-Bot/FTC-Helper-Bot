@@ -1,5 +1,6 @@
 package com.bot.commands.API;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.net.http.HttpClient;
@@ -46,25 +47,48 @@ public class FTCAPI {
         }
     }
 
-    public static JSONObject getJSON(String urlstr, String username, String password) throws org.json.JSONException {
-        HttpResponse<byte[]> response = get(urlstr, username, password);
+    public static JSONObject getJSON(String urlstr, String username, String password) throws JSONException {
+        HttpResponse<byte[]> response;
+
+        // Assuming get() is a method that makes the HTTP request and returns the response.
+        response = get(urlstr, username, password);
+
         byte[] responseBody = response.body();
         String responseStr = null;
+
         if (responseBody != null && responseBody.length > 0) {
             responseStr = new String(responseBody);
         }
 
-        if (response.statusCode() >=300){
+        // Handling response with status code >= 300
+        if (response.statusCode() >= 300) {
             JSONObject errorObject = new JSONObject();
             errorObject.put("error", true);
-            if (responseStr != null) {
+            errorObject.put("statusCode", response.statusCode());
+
+            if (responseStr != null && !responseStr.isEmpty()) {
                 errorObject.put("message", responseStr);
+            } else {
+                errorObject.put("message", "Unknown error occurred. Status code: " + response.statusCode());
             }
             return errorObject;
-        } else {
-            JSONObject object = new JSONObject(responseStr);return object;
+        }
+
+        // Try to parse the response as JSON and handle possible exceptions
+        try {
+            if (responseStr != null && !responseStr.isEmpty()) {
+                return new JSONObject(responseStr);
+            } else {
+                throw new JSONException("Empty response body");
+            }
+        } catch (JSONException e) {
+            JSONObject errorObject = new JSONObject();
+            errorObject.put("error", true);
+            errorObject.put("message", "Failed to parse response body as JSON: " + e.getMessage());
+            return errorObject;
         }
     }
+
 
 
     // get json with credentials from config
