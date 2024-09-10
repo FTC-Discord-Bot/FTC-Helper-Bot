@@ -120,15 +120,16 @@ public class FTCScoutAPI {
             String graphQlQuery = ("query{\n" +
                     "  teamsSearch(\n" +
                     "\tsearchText: \"<>\"\n" +
-                    "\tregion: ALL\n" +
                     "  limit:5\n" +
                     "  ){\n" +
                     "  name \n" +
                     "  number\n" +
                     "  schoolName\n" +
-                    "  country\n" +
-                    "    stateOrProvince\n" +
-                    "    city\n" +
+                    "  location{" +
+                    "      country" +
+                    "      state" +
+                    "      city" +
+                    "    }" +
                     "  }\n" +
                     "}").replace("<>", query);
 
@@ -385,17 +386,10 @@ public class FTCScoutAPI {
                     "  eventsSearch(\n" +
                     "    searchText: \"<>\"\n" +
                     "    limit: 5\n" +
-                    "    onlyWithMatches: false\n" +
                     "    season: %%\n" +
-                    "    region: ALL\n" +
-                    "    eventTypes: TRAD_AND_REMOTE\n" +
                     "  ){\n" +
                     "    name\n" +
-                    "    venue\n" +
                     "    address\n" +
-                    "    city\n" +
-                    "    stateOrProvince\n" +
-                    "    country\n" +
                     "    code\n" +
                     "  }\n" +
                     "\n" +
@@ -404,7 +398,7 @@ public class FTCScoutAPI {
             graphQlQuery = graphQlQuery.replace("%%", String.valueOf(season));
             JSONObject response = api.sendGraphQLRequest(graphQlQuery);
             if (response != null) {
-                eventsSearch.put(query, response);
+                eventsSearch.put(query+"|"+season, response);
 
                 if (eventsSearch.size() > 5) {
                     // If the map size exceeds the maximum, remove the oldest entry (first inserted).
